@@ -105,3 +105,27 @@ def gaspari_cohn(r):
     elif 1<=r and r<2:
         corr = 4 - 5*r + 5/3*r**2 + 5/8*r**3 - 1/2*r**4 + 1/12*r**5 - 2/(3*r)
     return corr
+
+def decompo_propre(A):
+    valeurs_propres, vecteurs_propres = np.linalg.eig(A)
+    P = vecteurs_propres
+    M = np.diag(valeurs_propres)
+    P_inv = np.linalg.inv(P)
+    return P,M,P_inv
+
+# version temporaire qui doit marcher uniquement si R est diagonale
+def localise_temp(ind,Xf_mean, dXf, Y_mean, dY,R, obs):
+    Xf_mean_loc = Xf_mean[ind,:]
+    dXf_loc = dXf[ind,:]
+    Y_mean_loc = Y_mean[ind,:]
+    dY_loc = dY[ind,:]
+    R_loc = np.diag(R[ind,ind])
+    obs_loc = obs[ind,:]
+    
+    return Xf_mean_loc, dXf_loc, Y_mean_loc , dY_loc, R_loc, obs_loc
+
+def select_ind(i,L,Nx,list_var):
+    dlist_var = np.concatenate((list_var,list_var,list_var))
+    return dlist_var[(Nx+(i-L//2)):(Nx+(i+L//2))]
+    
+    
